@@ -2,7 +2,6 @@
   "name": "@conan/cli",
   "version": "0.1.0",
   "description": "scaffold for nodejs project, created by conan",
-  "main": "index.js",
   "bin": {
     "@conan/cli": "./bin/start.js",
     "conan": "./bin/start.js",
