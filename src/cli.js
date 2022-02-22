@@ -22,19 +22,24 @@ function parseArgumentsIntoOptions(rawArgs) {
       '--git': Boolean,
       '--yes': Boolean,
       '--install': Boolean,
+      '--typescript': Boolean,
       '-g': '--git',
       '-y': '--yes',
       '-i': '--install',
+      '-t': '--typescript',
     },
     {
       argv: rawArgs.slice(2),
     }
   );
+  console.log(args)
   return {
     skipPrompts: args['--yes'] || false,
     git: args['--git'] || false,
-    template: args._[0],
+    projectName: args._[0],
     runInstall: args['--install'] || false,
+    typescript: args['--typescript'] || false,
+    template: args['--template'] || '',
   }
 }
 async function promptForMissingOptions(options) {
@@ -67,11 +72,20 @@ async function promptForMissingOptions(options) {
       default: false,
     });
   }
+  if (!options.typescript) {
+    questions.push({
+      type: 'confirm',
+      name: 'typescript',
+      message: 'Do you use Typescript?',
+      default: false,
+    });
+  }
   // 使用 inquirer 进行交互式查询，并获取用户答案选项
   const answers = await inquirer.prompt(questions);
   return {
     ...options,
     template: options.template || answers.template,
+    typescript: options.typescript || answers.typescript,
     git: options.git || answers.git,
   };
 }
