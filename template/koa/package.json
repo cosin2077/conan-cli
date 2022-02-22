@@ -1,0 +1,31 @@
+{
+  "name": "koa",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "koa",
+    "nodejs",
+    "starter"
+  ],
+  "author": "conan",
+  "email": "hk3d2y@163.com",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "bunyan": "^1.8.15",
+    "koa": "^2.13.4",
+    "koa-body": "^4.2.0",
+    "koa-bunyan-logger": "^2.1.0",
+    "koa-router": "^10.1.1",
+    "koa-static": "^5.0.0",
+    "koa2-swagger-ui": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
