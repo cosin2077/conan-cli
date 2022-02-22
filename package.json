@@ -12,12 +12,21 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "cli", "node", "nodejs", "koa", "server", "serverless"
+    "cli",
+    "node",
+    "nodejs",
+    "koa",
+    "server",
+    "serverless"
   ],
   "author": "conan",
   "email": "hk3d2y@163.com",
   "license": "ISC",
   "dependencies": {
-    "esm": "^3.2.25"
+    "arg": "^5.0.1",
+    "chalk": "^5.0.0",
+    "esm": "^3.2.25",
+    "inquirer": "^8.2.0",
+    "ncp": "^2.0.0"
   }
 }
