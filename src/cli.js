@@ -1,5 +1,6 @@
 import arg from 'arg';
 import inquirer from 'inquirer';
+import { createProject } from './main';
 // 解析命令行参数为 options
 function parseArgumentsIntoOptions(rawArgs) {
   // 使用 arg 进行解析
@@ -64,4 +65,5 @@ export async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
   options = await promptForMissingOptions(options);
   console.log(options);
+  await createProject(options);
 }
