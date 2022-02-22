@@ -1,6 +1,19 @@
 import arg from 'arg';
 import inquirer from 'inquirer';
 import { createProject } from './main';
+import * as fs from 'fs';
+import * as path from 'path';
+
+const validateTemplate = (templatePath) => {
+  return fs.existsSync(templatePath)
+          && fs.statSync(templatePath).isDirectory()
+            && fs.existsSync(path.resolve(templatePath, 'package.json'))
+}
+const parseTemplates = () => {
+  let templates = fs.readdirSync(path.resolve(__dirname, '../templates'))
+  templates = templates.filter((dir) => validateTemplate(path.resolve(__dirname, '../templates', dir)))
+  return templates
+}
 // 解析命令行参数为 options
 function parseArgumentsIntoOptions(rawArgs) {
   // 使用 arg 进行解析
@@ -26,7 +39,8 @@ function parseArgumentsIntoOptions(rawArgs) {
 }
 async function promptForMissingOptions(options) {
   // 默认使用名为 JavaScript 的模板
-  const defaultTemplate = 'JavaScript';
+  const templates = parseTemplates();
+  const defaultTemplate = templates[0];
   // 使用默认模板则直接返回
   if (options.skipPrompts) {
     return {
@@ -41,7 +55,7 @@ async function promptForMissingOptions(options) {
       type: 'list',
       name: 'template',
       message: 'Please choose which project template to use',
-      choices: ['JavaScript', 'TypeScript'],
+      choices: templates,
       default: defaultTemplate,
     });
   }
