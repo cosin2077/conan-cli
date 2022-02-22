@@ -32,6 +32,7 @@ export async function createProject(options) {
   };
   const currentFileUrl = import.meta.url;
   console.log(currentFileUrl)
+  return
   const templateDir = path.resolve(
     new URL(currentFileUrl).pathname,
     '../../templates',
