@@ -5,6 +5,7 @@ import path from 'path';
 import { promisify } from 'util';
 import execa from 'execa';
 import Listr from 'listr';
+import mkdirp from 'mkdirp';
 import { projectInstall } from 'pkg-install';
 const access = promisify(fs.access);
 const copy = promisify(ncp);
@@ -28,11 +29,22 @@ async function initGit(options) {
 export async function createProject(options) {
   options = {
     ...options,
-    targetDirectory: options.targetDirectory || process.cwd(),
+    targetDirectory: options.projectName || process.cwd(),
   };
+  const projectDir = path.resolve(process.cwd(), options.projectName)
+  try {
+    // 判断项目目录是否存在
+    const exists = fs.existsSync(projectDir);
+    if (exists) {
+      console.error('%s project directory exists please use another name!', chalk.red.bold('ERROR'));
+      return process.exit(1);
+    }
+    mkdirp.sync(projectDir)
+    console.log(`create directory: ${projectDir}`)
+  } catch (err) {
+    console.log(err)
+  }
   const currentFileUrl = import.meta.url;
-  console.log(currentFileUrl)
-  return
   const templateDir = path.resolve(
     new URL(currentFileUrl).pathname,
     '../../templates',
@@ -73,5 +85,6 @@ export async function createProject(options) {
   // 并行执行 tasks
   await tasks.run();
   console.log('%s Project ready', chalk.green.bold('DONE'));
+  console.log(`%s cd ${options.projectName} && yarn dev`, chalk.green.bold('DONE'))
   return true;
 }

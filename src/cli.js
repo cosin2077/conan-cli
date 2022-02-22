@@ -1,4 +1,5 @@
 import arg from 'arg';
+import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { createProject } from './main';
 import * as fs from 'fs';
@@ -32,7 +33,6 @@ function parseArgumentsIntoOptions(rawArgs) {
       argv: rawArgs.slice(2),
     }
   );
-  console.log(args)
   return {
     skipPrompts: args['--yes'] || false,
     git: args['--git'] || false,
@@ -43,6 +43,16 @@ function parseArgumentsIntoOptions(rawArgs) {
   }
 }
 async function promptForMissingOptions(options) {
+  try {
+    const exists = fs.existsSync(options.projectName);
+    if (exists) {
+      console.error('%s project directory exists please use another name!', chalk.red.bold('ERROR'));
+      return process.exit(1);
+    }
+  } catch (err) {
+    console.log(err)
+    return process.exit(1);
+  }
   // 默认使用名为 JavaScript 的模板
   const templates = parseTemplates();
   const defaultTemplate = templates[0];
@@ -92,6 +102,5 @@ async function promptForMissingOptions(options) {
 export async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
   options = await promptForMissingOptions(options);
-  console.log(options);
   await createProject(options);
 }
